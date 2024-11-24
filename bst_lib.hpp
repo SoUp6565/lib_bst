@@ -2,6 +2,75 @@
 
 using namespace std;
 
+class node
+{
+private:
+    int data;
+    int weight;
+    node* lchild;
+    node* rchild;
+public:
+    node(int d);
+    node* insertR(int k);
+    void inOrder();
+    ~node(){};
+};
+
+node::node(int d){
+    data=d;
+    weight=1;
+    lchild=nullptr;
+    rchild=nullptr;
+}
+
+node* node::insertR(int k){
+    node* helper{this};
+    while (helper!=NULL)
+    {
+        if (k>helper->data)
+        {
+            if (helper->rchild==nullptr)
+            {
+                helper->rchild=new node(k);
+                break;
+            }
+            else{
+                helper=helper->rchild;
+            }
+        }
+        else{
+            if (helper->lchild==nullptr)
+            {
+                helper->lchild=new node(k);
+                break;
+            }
+            else{
+                helper=helper->lchild;
+            }
+        }
+    }
+    
+    return this;
+}
+
+void node::inOrder(){
+    if (this == nullptr) return;
+
+    if (lchild!=nullptr)
+    {
+        lchild->inOrder();
+    }
+    
+    cout << data << " ";
+
+    if (rchild!=nullptr)
+    {
+        rchild->inOrder();
+    }
+    
+}
+
+/*
 struct node{
     int value;
     int ntimes;
@@ -37,8 +106,7 @@ node* inserimentoRic(node* r, int k){
 
     return r;
 }
-//ciao
-/*
+
 node* inserimentoNonRic(node* r, int k){
     node* helper{r};
     while (helper!=NULL)
@@ -68,7 +136,7 @@ node* inserimentoNonRic(node* r, int k){
     
     return r;
 }
-*/
+
 bool ricerca(node* r, int k){
     node* helper{r};
     while (helper!=NULL)
@@ -332,3 +400,5 @@ bool isBst(node* r, int min, int max){ //usare <limits.h> quando passi i valore 
     return isBst(r->lchild,min,r->value)&&isBst(r->rchild,r->value,max);
     
 }
+
+*/

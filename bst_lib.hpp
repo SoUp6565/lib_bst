@@ -37,7 +37,7 @@ node* inserimentoRic(node* r, int k){
 
     return r;
 }
-
+//ciao
 /*
 node* inserimentoNonRic(node* r, int k){
     node* helper{r};

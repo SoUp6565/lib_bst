@@ -38,7 +38,7 @@ node* inserimentoRic(node* r, int k){
     return r;
 }
 
-
+/*
 node* inserimentoNonRic(node* r, int k){
     node* helper{r};
     while (helper!=NULL)
@@ -68,7 +68,7 @@ node* inserimentoNonRic(node* r, int k){
     
     return r;
 }
-
+*/
 bool ricerca(node* r, int k){
     node* helper{r};
     while (helper!=NULL)

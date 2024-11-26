@@ -11,8 +11,14 @@ private:
     node* rchild;
 public:
     node(int d);
+    node* inserIt(int k);
     node* insertR(int k);
+    bool  research(int k);
     void inOrder();
+    void preOrder();
+    void PostOrder();
+    int height();
+    bool isBst(int min, int max);
     ~node(){};
 };
 
@@ -23,7 +29,7 @@ node::node(int d){
     rchild=nullptr;
 }
 
-node* node::insertR(int k){
+node* node::inserIt(int k){
     node* helper{this};
     while (helper!=NULL)
     {
@@ -55,23 +61,123 @@ node* node::insertR(int k){
 
 void node::inOrder(){
     if (this == nullptr) return;
+    lchild->inOrder();
+    cout << data << " ";
+    rchild->inOrder(); 
+}
 
-    if (lchild!=nullptr)
+node* node::insertR(int k){
+    if (this==nullptr)
     {
-        lchild->inOrder();
+        return new node(k);
     }
     
-    cout << data << " ";
-
-    if (rchild!=nullptr)
+    if (data==k)
     {
-        rchild->inOrder();
+        weight+=1;
+        return this;
     }
+    
+    if (k < data)
+    {
+        if (lchild==nullptr)
+        {
+            lchild=new node(k);
+        }{
+            lchild->insertR(k);
+        }
+    }
+    else{
+        if (rchild==nullptr)
+        {
+            rchild=new node(k);
+        }{
+            rchild->insertR(k);
+        }
+    }
+    return this;
+}
+
+bool node::research(int k){
+    node* helper{this};
+    while (helper!=NULL)
+    {
+        if (helper->data==k)
+        {
+            return true;
+        }
+        else{
+            if (k>helper->data)
+            {
+                if (helper->data==k)
+                {
+                    return true;
+                }   
+                else{
+                    helper=helper->rchild;
+                }
+            }
+            else{
+                if (helper->data==k)
+                {
+                    return true;
+                }
+                else{
+                    helper=helper->lchild;
+                }
+            }
+        }
+    
+    }    
+    return false;
+}
+
+void node::preOrder() {
+    if (this == nullptr) return;
+    cout << data << " ";
+    lchild->preOrder();
+    rchild->preOrder();
+}
+
+void node::PostOrder(){
+    if (this == nullptr) return;
+    lchild->PostOrder();
+    rchild->PostOrder();
+    cout << data << " ";
+}
+
+int node::height(){
+    if (this == nullptr) return 0;
+    
+    int altSx{lchild->height()};
+
+    int altDx{rchild->height()};
+
+    if ((altDx+1)>(altSx+1))
+    {
+        return altDx+1;
+    }
+    else{
+        return altSx+1;
+    }
+}
+
+bool node::isBst( int min, int max){ // da correggire
+    if (this==nullptr)
+    {
+        return true;
+    }
+    if (data<=min||data>=max)
+    {
+        return false;
+    }
+    
+    return lchild->isBst(min,data)&&rchild->isBst(data,max);
     
 }
 
 /*
-struct node{
+struct node{//f
     int value;
     int ntimes;
     node* lchild;
@@ -84,7 +190,7 @@ struct node{
     }
 };
 
-node* inserimentoRic(node* r, int k){
+node* inserimentoRic(node* r, int k){//f
     if (r==NULL)
     {
         return new node(k);
@@ -107,7 +213,7 @@ node* inserimentoRic(node* r, int k){
     return r;
 }
 
-node* inserimentoNonRic(node* r, int k){
+node* inserimentoNonRic(node* r, int k){//f
     node* helper{r};
     while (helper!=NULL)
     {
@@ -137,7 +243,7 @@ node* inserimentoNonRic(node* r, int k){
     return r;
 }
 
-bool ricerca(node* r, int k){
+bool ricerca(node* r, int k){//f
     node* helper{r};
     while (helper!=NULL)
     {
@@ -336,7 +442,7 @@ node* eliminazione(node* &r, int k){ //verificare sempre prima la presenza del v
     }
 }
 
-void preOrder(node* r) {
+void preOrder(node* r) {//f
 
     if (r == nullptr) return;
 
@@ -348,7 +454,7 @@ void preOrder(node* r) {
 
 }
 
-void InOrder(node* r){
+void InOrder(node* r){//f
     if (r == nullptr) return;
 
     InOrder(r->lchild);
@@ -358,7 +464,7 @@ void InOrder(node* r){
     InOrder(r->rchild);
 }
 
-void PostOrder(node* r){
+void PostOrder(node* r){//f
     if (r == nullptr) return;
 
     PostOrder(r->lchild);
@@ -369,7 +475,7 @@ void PostOrder(node* r){
 }
 
 
-int altezza(node* r){ 
+int altezza(node* r){//f
     if (r == nullptr) return 0;
     
     int altSx{altezza(r->lchild)};

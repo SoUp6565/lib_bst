@@ -11,12 +11,13 @@ private:
     node* rchild;
 public:
     node(int d);
-    node* inserIt(int k);
+    node* insertI(int k);
     node* insertR(int k);
-    bool  research(int k);
+    bool searchI(int k);
+    bool searchR(int k);
     void inOrder();
     void preOrder();
-    void PostOrder();
+    void postOrder();
     int height();
     bool isBst(int min, int max);
     ~node(){};
@@ -29,7 +30,7 @@ node::node(int d){
     rchild=nullptr;
 }
 
-node* node::inserIt(int k){
+node* node::insertI(int k){
     node* helper{this};
     while (helper!=NULL)
     {
@@ -98,7 +99,39 @@ node* node::insertR(int k){
     return this;
 }
 
-bool node::research(int k){
+bool node::searchR(int k)
+{
+    if (this==nullptr)
+    {
+        return false;
+    }
+    
+    if (data==k)
+    {
+        return true;
+    }
+
+    if (k < data)
+    {
+        if (lchild==nullptr)
+        {
+            return false;
+        }else{
+            return lchild->searchR(k);
+        }
+    }
+    else{
+        if (rchild==nullptr)
+        {
+            return false;
+        }else{
+            return rchild->searchR(k);
+        }
+    }
+    return false;
+}
+
+bool node::searchI(int k){
     node* helper{this};
     while (helper!=NULL)
     {
@@ -139,10 +172,10 @@ void node::preOrder() {
     rchild->preOrder();
 }
 
-void node::PostOrder(){
+void node::postOrder(){
     if (this == nullptr) return;
-    lchild->PostOrder();
-    rchild->PostOrder();
+    lchild->postOrder();
+    rchild->postOrder();
     cout << data << " ";
 }
 

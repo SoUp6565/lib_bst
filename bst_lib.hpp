@@ -12,7 +12,7 @@ private:
 
 public:
     node(int d);
-    node(){};
+    node() {};
     node *insertI(int k);
     node *insertR(int k);
     bool searchI(int k);
@@ -21,45 +21,48 @@ public:
     void preOrder();
     void postOrder();
     int height();
-    bool isBst();
-    friend ostream &operator<<(ostream &os, node& c)
+    friend ostream &operator<<(ostream &os, node &c)
     {
         os << "data: " << c.data << endl;
         os << "weight: " << c.weight << endl;
-        if (c.lchild!=nullptr)
+        if (c.lchild != nullptr)
         {
             os << "lc: " << c.lchild->data << endl;
         }
-        else{
+        else
+        {
             os << "lc: " << nullptr << endl;
         }
-        if (c.rchild!=nullptr)
+        if (c.rchild != nullptr)
         {
             os << "rc " << c.rchild->data << endl;
-        }else{
+        }
+        else
+        {
             os << "rc: " << nullptr << endl;
         }
-        
+
         return os;
     }
-    friend istream &operator>>(istream &is, node*& c)
+    friend istream &operator>>(istream &is, node *&c)
     {
-        if (c==nullptr)
+        if (c == nullptr)
         {
             cout << " data:" << endl;
             int d;
-            is>>d;
-            c=new node(d);
-        }else{
+            is >> d;
+            c = new node(d);
+        }
+        else
+        {
             cout << " data:" << endl;
             int d;
-            is>>d;
-            c->data=d;
-            c->lchild=nullptr;
+            is >> d;
+            c->data = d;
+            c->lchild = nullptr;
             c->rchild;
         }
-        
-        
+
         return is;
     }
     ~node() {};

@@ -12,6 +12,7 @@ private:
 
 public:
     node(int d);
+    node(){};
     node *insertI(int k);
     node *insertR(int k);
     bool searchI(int k);
@@ -20,22 +21,45 @@ public:
     void preOrder();
     void postOrder();
     int height();
-    bool isBst(int min, int max);
-    friend ostream &operator<<(ostream &os, node &c)
+    bool isBst();
+    friend ostream &operator<<(ostream &os, node& c)
     {
         os << "data: " << c.data << endl;
         os << "weight: " << c.weight << endl;
-        os << "lc: " << c.lchild << endl;
-        os << "rc " << c.rchild << endl;
+        if (c.lchild!=nullptr)
+        {
+            os << "lc: " << c.lchild->data << endl;
+        }
+        else{
+            os << "lc: " << nullptr << endl;
+        }
+        if (c.rchild!=nullptr)
+        {
+            os << "rc " << c.rchild->data << endl;
+        }else{
+            os << "rc: " << nullptr << endl;
+        }
+        
         return os;
     }
-    friend istream &operator>>(istream &is, node &c)
-    //non crea la root
+    friend istream &operator>>(istream &is, node*& c)
     {
-        cout << " data:" << endl;
-        int d;
-        is>>d;
-        c.insertI(d);
+        if (c==nullptr)
+        {
+            cout << " data:" << endl;
+            int d;
+            is>>d;
+            c=new node(d);
+        }else{
+            cout << " data:" << endl;
+            int d;
+            is>>d;
+            c->data=d;
+            c->lchild=nullptr;
+            c->rchild;
+        }
+        
+        
         return is;
     }
     ~node() {};
@@ -240,20 +264,20 @@ int node::height()
     }
 }
 
-bool node::isBst(int min, int max)
+/*bool node::isBst()
 { // da correggire
     if (this == nullptr)
     {
         return true;
     }
-    if (data <= min || data >= max)
+    if (data <= INT_MIN || data >= INT_MAX)
     {
         return false;
     }
 
-    return lchild->isBst(min, data) && rchild->isBst(data, max);
+    return lchild->isBst(INT_MIN, data) && rchild->isBst(data, INT_MAX);
 }
-
+*/
 /*
 struct node{//f
     int value;

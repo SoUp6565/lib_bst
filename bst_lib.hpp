@@ -65,6 +65,8 @@ public:
 
         return is;
     }
+    node *deleteNode(int k);
+    bool isBst();
     ~node() {};
 };
 
@@ -267,20 +269,232 @@ int node::height()
     }
 }
 
-/*bool node::isBst()
-{ // da correggire
-    if (this == nullptr)
+bool node::isBst()
+{
+    if (lchild != NULL)
     {
-        return true;
+        if (lchild->data < data)
+        {
+            bool helper;
+            helper = lchild->isBst();
+            if (helper == false)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
-    if (data <= INT_MIN || data >= INT_MAX)
+    if (rchild != NULL)
     {
-        return false;
+        if (rchild->data > data)
+        {
+            bool helper;
+            helper = rchild->isBst();
+            if (helper == false)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
-
-    return lchild->isBst(INT_MIN, data) && rchild->isBst(data, INT_MAX);
+    return true;
 }
-*/
+
+node *node::deleteNode(int k)
+{
+    if (searchR(k) == true)
+    {
+        if (k < data)
+        {
+            if (lchild->data == k)
+            {
+                if (lchild->lchild != nullptr && lchild->rchild != nullptr)
+                {
+                    node *minDest = lchild->rchild;
+                    node *dad = lchild;
+                    while (minDest->lchild != nullptr)
+                    {
+                        dad = minDest;
+                        minDest = minDest->lchild;
+                    }
+
+                    int temp = lchild->data;
+                    lchild->data = minDest->data;
+                    minDest->data = temp;
+
+                    if (dad->lchild == minDest)
+                    {
+                        delete minDest;
+                        dad->lchild = nullptr;
+                    }
+                    else
+                    {
+                        delete minDest;
+                        dad->rchild = nullptr;
+                    }
+
+                    return this;
+                }
+                else if (lchild->lchild != nullptr || lchild->rchild != nullptr)
+                {
+                    node helper(0);
+                    if (lchild->lchild != nullptr)
+                    {
+                        helper.data = lchild->data;
+                        lchild->data = lchild->lchild->data;
+                        lchild->lchild->data = helper.data;
+
+                        delete lchild->lchild;
+                        lchild->lchild = nullptr;
+                        return this;
+                    }
+                    else
+                    {
+                        helper.data = lchild->data;
+                        lchild->data = lchild->rchild->data;
+                        lchild->rchild->data = helper.data;
+
+                        delete lchild->rchild;
+                        lchild->rchild = nullptr;
+                        return this;
+                    }
+                }
+                else
+                {
+                    delete lchild;
+                    lchild = nullptr;
+                    return this;
+                }
+            }
+            lchild = lchild->deleteNode(k);
+        }
+        else if (k == data) // root
+        {
+            if (lchild == nullptr && rchild == nullptr)
+            {
+                delete this;
+            }
+            else if (lchild == nullptr || rchild == nullptr)
+            {
+                node *temp;
+                if (lchild != nullptr)
+                {
+                    temp = lchild;
+                }
+                else
+                {
+                    temp = rchild;
+                }
+                delete this;
+                *this = *temp;
+            }
+            else
+            {
+
+                node *minDest = rchild;
+                node *dad = this;
+                while (minDest->lchild != nullptr)
+                {
+                    dad = minDest;
+                    minDest = minDest->lchild;
+                }
+                int temp = data;
+                data = minDest->data;
+                minDest->data = temp;
+                if (dad->lchild == minDest)
+                {
+                    delete minDest;
+                    dad->lchild = nullptr;
+                }
+                else
+                {
+                    delete minDest;
+                    dad->rchild = nullptr;
+                }
+            }
+            return this;
+        }
+        else
+        {
+            if (rchild->data == k)
+            {
+                if (rchild->lchild != nullptr && rchild->rchild != nullptr)
+                {
+
+                    node *minDest = rchild->rchild;
+                    node *dad = rchild;
+                    while (minDest->lchild != nullptr)
+                    {
+                        dad = minDest;
+                        minDest = minDest->lchild;
+                    }
+
+                    int temp = rchild->data;
+                    rchild->data = minDest->data;
+                    minDest->data = temp;
+
+                    if (dad->lchild == minDest)
+                    {
+                        delete minDest;
+                        dad->lchild = nullptr;
+                    }
+                    else
+                    {
+                        delete minDest;
+                        dad->rchild = nullptr;
+                    }
+
+                    return this;
+                }
+                else if (rchild->lchild != nullptr || rchild->rchild != nullptr)
+                {
+                    node helper(0);
+                    if (lchild->lchild != nullptr)
+                    {
+                        helper.data = rchild->data;
+                        rchild->data = rchild->lchild->data;
+                        rchild->lchild->data = helper.data;
+
+                        delete rchild->lchild;
+                        rchild->lchild = nullptr;
+                        return this;
+                    }
+                    else
+                    {
+                        helper.data = rchild->data;
+                        rchild->data = rchild->rchild->data;
+                        rchild->rchild->data = helper.data;
+
+                        delete rchild->rchild;
+                        rchild->rchild = nullptr;
+                        return this;
+                    }
+                }
+                else
+                {
+                    delete rchild;
+                    rchild = nullptr;
+                    return this;
+                }
+            }
+            rchild = rchild->deleteNode(k);
+        }
+
+        return this;
+    }
+    else
+    {
+        cout << "non è presente nel bst" << endl;
+        return this;
+    }
+}
+
 /*
 struct node{//f
     int value;
@@ -382,7 +596,7 @@ bool ricerca(node* r, int k){//f
     return false;
 }
 
-node* eliminazione(node* &r, int k){ //verificare sempre prima la presenza del valore k nel bst con la funzione ricerca
+node* eliminazione(node* &r, int k){ //verificare sempre prima la presenza del valore k nel bst con la funzione ricerca//f
     if (ricerca(r,k)==true)
     {
         if (k < r->value)

@@ -2,26 +2,26 @@
 
 using namespace std;
 
-class node
+class Node
 {
 private:
     int data;
     int weight;
-    node *lchild;
-    node *rchild;
+    Node *lchild;
+    Node *rchild;
 
 public:
-    node(int d);
-    node() {};
-    node *insertI(int k);
-    node *insertR(int k);
+    Node(int d);
+    Node() {};
+    Node *insertI(int k);
+    Node *insertR(int k);
     bool searchI(int k);
     bool searchR(int k);
     void inOrder();
     void preOrder();
     void postOrder();
     int height();
-    friend ostream &operator<<(ostream &os, node &c)
+    friend ostream &operator<<(ostream &os, Node &c)
     {
         os << "data: " << c.data << endl;
         os << "weight: " << c.weight << endl;
@@ -44,14 +44,14 @@ public:
 
         return os;
     }
-    friend istream &operator>>(istream &is, node *&c)
+    friend istream &operator>>(istream &is, Node *&c)
     {
         if (c == nullptr)
         {
             cout << " data:" << endl;
             int d;
             is >> d;
-            c = new node(d);
+            c = new Node(d);
         }
         else
         {
@@ -65,12 +65,12 @@ public:
 
         return is;
     }
-    node *deleteNode(int k);
+    Node *deleteNode(int k);
     bool isBst();
-    ~node() {};
+    ~Node() {};
 };
 
-node::node(int d)
+Node::Node(int d)
 {
     data = d;
     weight = 1;
@@ -78,16 +78,16 @@ node::node(int d)
     rchild = nullptr;
 }
 
-node *node::insertI(int k)
+Node *Node::insertI(int k)
 {
-    node *helper{this};
+    Node *helper{this};
     while (helper != NULL)
     {
         if (k > helper->data)
         {
             if (helper->rchild == nullptr)
             {
-                helper->rchild = new node(k);
+                helper->rchild = new Node(k);
                 break;
             }
             else
@@ -99,7 +99,7 @@ node *node::insertI(int k)
         {
             if (helper->lchild == nullptr)
             {
-                helper->lchild = new node(k);
+                helper->lchild = new Node(k);
                 break;
             }
             else
@@ -112,7 +112,7 @@ node *node::insertI(int k)
     return this;
 }
 
-void node::inOrder()
+void Node::inOrder()
 {
     if (this == nullptr)
         return;
@@ -121,11 +121,11 @@ void node::inOrder()
     rchild->inOrder();
 }
 
-node *node::insertR(int k)
+Node *Node::insertR(int k)
 {
     if (this == nullptr)
     {
-        return new node(k);
+        return new Node(k);
     }
 
     if (data == k)
@@ -138,7 +138,7 @@ node *node::insertR(int k)
     {
         if (lchild == nullptr)
         {
-            lchild = new node(k);
+            lchild = new Node(k);
         }
         {
             lchild->insertR(k);
@@ -148,7 +148,7 @@ node *node::insertR(int k)
     {
         if (rchild == nullptr)
         {
-            rchild = new node(k);
+            rchild = new Node(k);
         }
         {
             rchild->insertR(k);
@@ -157,7 +157,7 @@ node *node::insertR(int k)
     return this;
 }
 
-bool node::searchR(int k)
+bool Node::searchR(int k)
 {
     if (this == nullptr)
     {
@@ -194,9 +194,9 @@ bool node::searchR(int k)
     return false;
 }
 
-bool node::searchI(int k)
+bool Node::searchI(int k)
 {
-    node *helper{this};
+    Node *helper{this};
     while (helper != NULL)
     {
         if (helper->data == k)
@@ -232,7 +232,7 @@ bool node::searchI(int k)
     return false;
 }
 
-void node::preOrder()
+void Node::preOrder()
 {
     if (this == nullptr)
         return;
@@ -241,7 +241,7 @@ void node::preOrder()
     rchild->preOrder();
 }
 
-void node::postOrder()
+void Node::postOrder()
 {
     if (this == nullptr)
         return;
@@ -250,7 +250,7 @@ void node::postOrder()
     cout << data << " ";
 }
 
-int node::height()
+int Node::height()
 {
     if (this == nullptr)
         return 0;
@@ -269,7 +269,7 @@ int node::height()
     }
 }
 
-bool node::isBst()
+bool Node::isBst()
 {
     if (lchild != NULL)
     {
@@ -306,7 +306,7 @@ bool node::isBst()
     return true;
 }
 
-node *node::deleteNode(int k)
+Node *Node::deleteNode(int k)
 {
     if (searchR(k) == true)
     {
@@ -316,8 +316,8 @@ node *node::deleteNode(int k)
             {
                 if (lchild->lchild != nullptr && lchild->rchild != nullptr)
                 {
-                    node *minDest = lchild->rchild;
-                    node *dad = lchild;
+                    Node *minDest = lchild->rchild;
+                    Node *dad = lchild;
                     while (minDest->lchild != nullptr)
                     {
                         dad = minDest;
@@ -343,7 +343,7 @@ node *node::deleteNode(int k)
                 }
                 else if (lchild->lchild != nullptr || lchild->rchild != nullptr)
                 {
-                    node helper(0);
+                    Node helper(0);
                     if (lchild->lchild != nullptr)
                     {
                         helper.data = lchild->data;
@@ -382,7 +382,7 @@ node *node::deleteNode(int k)
             }
             else if (lchild == nullptr || rchild == nullptr)
             {
-                node *temp;
+                Node *temp;
                 if (lchild != nullptr)
                 {
                     temp = lchild;
@@ -397,8 +397,8 @@ node *node::deleteNode(int k)
             else
             {
 
-                node *minDest = rchild;
-                node *dad = this;
+                Node *minDest = rchild;
+                Node *dad = this;
                 while (minDest->lchild != nullptr)
                 {
                     dad = minDest;
@@ -427,8 +427,8 @@ node *node::deleteNode(int k)
                 if (rchild->lchild != nullptr && rchild->rchild != nullptr)
                 {
 
-                    node *minDest = rchild->rchild;
-                    node *dad = rchild;
+                    Node *minDest = rchild->rchild;
+                    Node *dad = rchild;
                     while (minDest->lchild != nullptr)
                     {
                         dad = minDest;
@@ -454,7 +454,7 @@ node *node::deleteNode(int k)
                 }
                 else if (rchild->lchild != nullptr || rchild->rchild != nullptr)
                 {
-                    node helper(0);
+                    Node helper(0);
                     if (lchild->lchild != nullptr)
                     {
                         helper.data = rchild->data;

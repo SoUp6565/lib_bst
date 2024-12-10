@@ -4,13 +4,13 @@ using namespace std;
 
 class node
 {
-    // private:
-public:
+private:
     int data;
     int weight;
     node *lchild;
     node *rchild;
-    // public:
+
+public:
     node(int d);
     node *insertI(int k);
     node *insertR(int k);
